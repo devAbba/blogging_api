@@ -1,4 +1,4 @@
-const User = require('../models/users');
+const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -13,9 +13,9 @@ async function registerUser (req, res){
         });
     }
     catch (error){
-        console.log(error)
-        res.status(400)
-        res.send("there was a problem creating user profile")
+        console.log(error);
+        res.status(400);
+        res.send("there was a problem creating user profile");
     }
     
 }
