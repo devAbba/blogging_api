@@ -1,8 +1,8 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
-async function registerUser (req, res){
+
+exports.registerUser = async (req, res) => {
     try {
         const userData = req.body;
         const user = await User.create(userData);
@@ -20,7 +20,7 @@ async function registerUser (req, res){
     
 }
 
-async function loginUser (req, res){
+exports.loginUser = async (req, res) => {
     try {
         const {email, password} = req.body
         const user = await User.findOne({ email })
@@ -48,7 +48,7 @@ async function loginUser (req, res){
     }
     catch (error){
         console.log(error)
+        res.status(500)
+        res.json({message: "there was a problem authenticating user"})
     }
 }
-
-module.exports = {registerUser, loginUser}

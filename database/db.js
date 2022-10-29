@@ -10,7 +10,7 @@ module.exports = () => {
         console.log("successfully connected to database");
     })
 
-    mongoose.connection.on("error", () => {
+    mongoose.connection.on("error", (error) => {
         console.log("There was a problem connecting to mongoDB");
         console.log(error);
     })

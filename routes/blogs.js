@@ -1,9 +1,8 @@
 const express = require('express');
+const blogController = require('../controllers/blogController')
 
-const blogRouter = express.Router()
+const blogRouter = express.Router();
 
-blogRouter.get('/', (req, res) => {
-    res.status(200).send("welcome to my blog posts")
-})
+blogRouter.get('/:postId', blogController.getPost);
 
-module.exports = blogRouter
+module.exports = blogRouter;
