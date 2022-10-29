@@ -3,25 +3,15 @@ const ObjectId = Schema.ObjectId;
 
 const blogSchema = new Schema({
     id: ObjectId,
-    title: {
-        type: String
-    },
-    description: {
-        type: String
-    },
-    tags: {
-
-    },
     author: {
+        type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    timestamp: {
-
-    },
+    timestamp: Date,
     state: {
         type: String,
-        enum: ['unpublished', 'published'],
-        default: 'unpublished'
+        enum: ['draft', 'published'],
+        default: 'draft'
     },
     read_count: {
         type: Number
@@ -29,9 +19,12 @@ const blogSchema = new Schema({
     reading_time: {
         type: String
     },
-    body: {
-        type: String
-    }
+    blog_post: [{
+        title: String,
+        description: String,
+        tags: String,
+        body: String
+    }]
 });
 
 const Blog = model('Blogs', blogSchema);
