@@ -2,14 +2,16 @@ const {Schema, model} = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const ObjectId = Schema.ObjectId
+
 const userSchema = new Schema({
     id: ObjectId,
     first_name: {
         type: String,
-        
+        required: true   
     },
     last_name: {
-        type: String
+        type: String,
+        required: true
     },
     email: {
         type: String,
@@ -20,7 +22,7 @@ const userSchema = new Schema({
         required: true,
         type: String
     },
-    posts: [
+    blogs: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Blog'
@@ -31,16 +33,24 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function (next){
     const user = this;
+
+    if (!user.isModified('password')){
+        return next()
+    }
     const hash = await bcrypt.hash(this.password, 10)
     this.password = hash;
     next();
 });
 
-userSchema.methods.isValidPassword = async function (password){
-    const user = this;
-    const compare = await bcrypt.compare(password, user.password);
-    return compare;
-}
+userSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString()
+        delete returnedObject._id
+        delete returnedObject.id
+        delete returnedObject.__v
+        delete returnedObject.password
+      }
+})
 
 const User = model("Users", userSchema);
 

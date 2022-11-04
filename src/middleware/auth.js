@@ -10,20 +10,24 @@ module.exports = async function (req, res, next){
         const authorizeToken = jwt.verify(token, process.env.SECRET)
         const user = await User.findById(authorizeToken.id)
         
-        if (!authorizeToken){
+        if (!token){
             return res.status(401).json({error: "invalid/no token provided"})
         }
         
         req.user = user;
 
         next();
-
-        // const user = await User.findById(authorizeToken.id)
         
     }
     
     catch (error){
-        console.log(error)
-        res.status(401).json({message: "invalid token"})
+        console.log(error);
+
+        const { TokenExpiredError } = jwt
+        if (error instanceof TokenExpiredError){
+           return res.status(401).json({message: "Unathorized! Access token expired"})
+        }
+        
+        res.status(401).json({message: "Unathorized! invalid token"})
     }
 }

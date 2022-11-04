@@ -1,21 +1,28 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 
 exports.registerUser = async (req, res) => {
     try {
         const userData = req.body;
-        const user = await User.create(userData);
-        res.status(201);
-        res.send({
+        const user = new User(userData);
+
+        await user.save()
+
+        delete user.password;
+
+        res.status(201).json({
             message: "user profile created successfully", 
-            user: user.first_name + " " + user.last_name
-        });
+            user: user
+        })
+        
     }
     catch (error){
         console.log(error);
-        res.status(400);
-        res.send("there was a problem creating user profile");
+        res.status(400).json({
+            message: "there was a problem creating user profile"
+        });
     }
     
 }
@@ -24,11 +31,11 @@ exports.loginUser = async (req, res) => {
     try {
         const {email, password} = req.body
         const user = await User.findOne({ email })
-        const userMatch = user === null ? false : await user.isValidPassword(password)
-
+        const userMatch = user === null ? false : await bcrypt.compare(password, user.password)
+        
         if (!(user && userMatch)) {
             return res.status(401).json({
-            error: 'invalid username or password'
+                error: "invalid username or password"
             })
         }
         
@@ -43,12 +50,17 @@ exports.loginUser = async (req, res) => {
             }
         )
     
-        res.status(200).send({token, user: user.first_name + " " + user.last_name})
+        
+        
+        return res.status(200).json({message: "Login successful", token });
           
     }
     catch (error){
         console.log(error)
-        res.status(500)
-        res.json({message: "there was a problem authenticating user"})
+        res.status(400).json({
+            message: "there was a problem authenticating user"
+        })
     }
 }
+
+
