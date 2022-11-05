@@ -5,12 +5,13 @@ const BlogModel = require('../models/blogModel');
 const UserModel = require('../models/userModel')
 
 
-describe('Blog Route', () => {
-    let conn;
+    
+describe('Blogs Route', () => {
+    let db_connect;
     let token;
 
     beforeAll(async () => {
-        conn = await connect()
+        db_connect = await connect()
 
         await UserModel.create({ 
             first_name: 'Madara',
@@ -20,7 +21,7 @@ describe('Blog Route', () => {
         });
 
         const loginResponse = await request(app)
-        .post('/login')
+        .post('/users/login')
         .set('content-type', 'application/json')
         .send({ 
             email: 'tobi@uchihaclan.io', 
@@ -30,64 +31,141 @@ describe('Blog Route', () => {
         token = loginResponse.body.token;
     })
 
-    afterEach(async () => {
-        await conn.cleanup()
-    })
+    // afterEach(async () => {
+    //     await db_connect.cleanup()
+    // })
 
     afterAll(async () => {
-        await conn.disconnect()
+
+        await db_connect.disconnect()
     })
 
-    it('should return blogs', async () => {
+    it('should create a blog', async () => {
         // create a blog draft in database
-        await BlogModel.create({
-            "title": "How things are going",
-            "description": "A true life story",
-            "tags": "autobiography",
-            "body": "The days are evil and sapa relentent not. Hearts are weary, hands are hung down, knees have become feeble. In all these, we still hold on to hope."
+        const response = await request(app).post('/blogs/save-draft')
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+            "title": "Example title",
+            "description": "A short description",
+            "tags": "Science and Technology",
+            "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
         })
 
-        await BlogModel.create({
-            "title": "Things Fall Apart",
-            "description": "A new twist",
-            "tags": "tragy-comedy",
-            "body": "Things been never even fall apart when dem been write that book."
+        expect(response.status).toBe(201)
+        expect(response.body).toHaveProperty('blog')
+        expect(response.body).toHaveProperty('status', true)
+        expect(response.body.blog.state).toBe('draft')
+        expect(response.body.blog.read_count).toBe(0)
+        expect(response.body.blog.publishedAt).toBe(null)   
+
+            //publish blog
+            // const id = response.body.blog.id
+            // const response2 = await request(app).patch(`/blogs/publish/${id}`)
+            // .set('content-type', 'application/json')
+            // .set('Authorization', `Bearer ${token}`)
+
+            // expect(response2.status).toBe(200)
+            // expect(response2.body).toHaveProperty('blog')
+            // expect(response2.body).toHaveProperty('status', true)
+            // expect(response2.body.blog.state).toBe('published')
+            // expect(response2.body.blog.read_count).toBe(0)
+            // expect(response.body.blog.publishedAt).not.toBe('null')
+    })
+        
+    it('should publish a blog', async () => {
+        // create a blog draft in database
+        const response = await request(app).post('/blogs/save-draft')
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+            "title": "Example title 2",
+            "description": "A short description",
+            "tags": "Science and Technology",
+            "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
         })
 
-        const response = await request(app)
-        .get('/users/myblogs')
+        // expect(response.status).toBe(201)
+        // expect(response.body).toHaveProperty('blog')
+        // expect(response.body).toHaveProperty('status', true)
+        // expect(response.body.blog.state).toBe('draft')
+        // expect(response.body.blog.read_count).toBe(0)
+        // expect(response.body.blog.publishedAt).toBe(null)
+
+        //publish blog
+        const id = response.body.blog.id
+        const response2 = await request(app).patch(`/blogs/publish/${id}`)
         .set('content-type', 'application/json')
         .set('Authorization', `Bearer ${token}`)
 
+        expect(response2.status).toBe(200)
+        expect(response2.body).toHaveProperty('blog')
+        expect(response2.body).toHaveProperty('status', true)
+        expect(response2.body.blog.state).toBe('published')
+        expect(response2.body.blog.read_count).toBe(0)
+        expect(response.body.blog.publishedAt).not.toBe('null')
+    })  
+    
+    it('should return blogs', async () => {
+        // return blogs that have been published
+       
+        const response = await request(app).get('/blogs?title=things')
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(res => console.log(res.body))
         expect(response.status).toBe(200)
         expect(response.body).toHaveProperty('blogs')
         expect(response.body).toHaveProperty('status', true)
-    })
+        expect(response.body).toHaveProperty('totalPages')
+        expect(response.body).toHaveProperty('currentPage')
+  
+   })
 
-    // it('should return blogs with matching title', async () => {
-    //     // create order in our db
-    //     await BlogModel.create({
-    //         state: 1,
-    //         total_price: 900,
-    //         created_at: moment().toDate(),
-    //         items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-    //     })
+//    it('should update blog' async () => {
+//         const blog = await request(app).get('blogs/')
+//    })
+        
+})
 
-    //     await OrderModel.create({
-    //         state: 2,
-    //         total_price: 900,
-    //         created_at: moment().toDate(),
-    //         items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-    //     })
+// describe('Getting blogs', () => {
+//     let db_connect;
+//     let token;
 
-    //     const response = await request(app)
-    //     .get('/orders?state=2')
-    //     .set('content-type', 'application/json')
-    //     .set('Authorization', `Bearer ${token}`)
+//     beforeAll(async () => {
+//         db_connect = await connect()
 
-    //     expect(response.status).toBe(200)
-    //     expect(response.body).toHaveProperty('orders')
-    //     expect(response.body).toHaveProperty('status', true)
-    //     expect(response.body.orders.every(order => order.state === 2)).toBe(true)
-    // })
-});
+//         await UserModel.create({ 
+//             first_name: 'Madara',
+//             last_name: 'Uchiha',
+//             email: 'tobi@uchihaclan.io',
+//             password: 'susano'
+//         });
+
+//         const loginResponse = await request(app)
+//         .post('/users/login')
+//         .set('content-type', 'application/json')
+//         .send({ 
+//             email: 'tobi@uchihaclan.io', 
+//             password: 'susano'
+//         });
+
+//         token = loginResponse.body.token;
+//     })
+
+//     it('should return blogs', async () => {
+//          // create a blog draft in database
+        
+//          const response = await request(app).get('/blogs')
+//          .set('content-type', 'application/json')
+//          .set('Authorization', `Bearer ${token}`)
+//          .expect((res) => {console.log(res.body)})
+//          expect(response.status).toBe(200)
+//          expect(response.body).toHaveProperty('blogs')
+//          expect(response.body).toHaveProperty('status', true)
+
+        
+        
+//     })
+// })    
+    
+    

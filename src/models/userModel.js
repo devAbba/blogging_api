@@ -49,9 +49,10 @@ userSchema.set('toJSON', {
         delete returnedObject.id
         delete returnedObject.__v
         delete returnedObject.password
+        delete returnedObject.blogs
       }
 })
 
-const User = model("Users", userSchema);
+const User = model("User", userSchema);
 
 module.exports = User;
