@@ -83,7 +83,7 @@ exports.getBlogPosts = async (req, res) => {
             tags,
             page = 1, 
             limit = 20,
-            order = 'desc',
+            order = 'asc',
             order_by = 'publishedAt',
 
         } = req.query;
@@ -91,15 +91,17 @@ exports.getBlogPosts = async (req, res) => {
         const findQuery = {}
 
         if (author) {
+            
+            const [first_name, last_name] = author.split(' ')
 
-            const [firstName, lastName] = author.split(' ')
+            const pattern1 = new RegExp(first_name, 'i')
+            const pattern2 = new RegExp(last_name, 'i')
+
+            const blogMatches = await User.find({first_name: pattern1, last_name: pattern2}, '-password')
+            const matchArr = blogMatches.map(blog => blog._id)
+
+            findQuery.author = {$in : matchArr}
             
-            const authorMatches = await User.find({first_name: firstName});
-            
-            const authorMatch = authorMatches.filter((author) => author["last_name"] === lastName);
-            
-            findQuery.author = authorMatch[0]._id
-           
         }
 
         if (title){
@@ -111,6 +113,7 @@ exports.getBlogPosts = async (req, res) => {
             const tagsPattern = new RegExp(tags, 'i')
             findQuery.tags = tagsPattern
         }
+
 
         const sortQuery = {};
         const sortAttributes = order_by.split(',')
@@ -125,8 +128,8 @@ exports.getBlogPosts = async (req, res) => {
             }
             
         }
-
-        const blogs = await Blog.find({findQuery, state: 'published'})
+        
+        const blogs = await Blog.find({...findQuery, state: 'published'})
         .populate('author', {first_name: 1, last_name: 1})
         .sort(sortQuery)
         .limit(limit * 1)

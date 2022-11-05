@@ -1,6 +1,6 @@
 # blogging_api
 
-This is an api for blogging applications
+An AltSchool Africa Examination Project
 
 ---
 
@@ -11,7 +11,10 @@ This is an api for blogging applications
 4. User should be able to get a list of their blogs
 5. Users should be able to create a blog
 6. Users should be able to update and delete blog posts
-7. Test application
+7. Logged in and not logged in users should be able to get a published blog
+8. Blogs should be searchable by title, author and tags
+9. Blogs should be orderable by read_count, reading_time and timestamp
+10. Test application
 ---
 ## Setup
 - Install NodeJS, mongodb
