@@ -8,6 +8,7 @@ const blogSchema = new Schema(
         id: ObjectId,
         title: {
             type: String,
+            required: true,
             unique: true
         },
         description: String,
@@ -58,11 +59,12 @@ blogSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
-        delete returnedObject.id
+        // delete returnedObject.id
         delete returnedObject.__v
+        // delete returnedObject.author
       }
 })
 
-const Blog = model('Blogs', blogSchema);
+const Blog = model('Blog', blogSchema);
 
 module.exports = Blog;

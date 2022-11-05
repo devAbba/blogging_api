@@ -23,7 +23,14 @@ const BlogCreateSchema = Joi.object({
     state: Joi.string()
         .valid('draft')
         .valid('published')
-        .optional()
+        .optional(),
+    createdAt: Joi.date()
+        .default(Date.now),
+    updatedAt: Joi.date()
+        .default(Date.now),    
+    publishedAt: Joi.date()
+        .default('')
+    
 })
 
 
@@ -32,7 +39,7 @@ const BlogUpdateSchema = Joi.object({
         .min(5)
         .max(255)
         .trim()
-        .required(),
+        .optional(),
     description: Joi.string()
         .min(5)
         .max(500)
@@ -46,11 +53,11 @@ const BlogUpdateSchema = Joi.object({
     body: Joi.string()
         .min(10)
         .trim()
-        .required(),
+        .optional(),
     state: Joi.string()
-        .valid('draft')
         .valid('published')
         .optional()
+         
 })
 
 async function CreateBlogValidationMW (req, res, next){
