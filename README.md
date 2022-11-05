@@ -24,7 +24,7 @@ An AltSchool Africa Examination Project
 
 ---
 ## Base URL
-- somehostsite.com
+- https://nightgown-fly.cyclic.app
 
 
 ## Models
