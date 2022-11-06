@@ -35,7 +35,7 @@ exports.createDraft = async (req, res) => {
     }
     catch (error){
         console.log(error);
-        res.status(400).json({message: error.message});
+        res.status(500).json({message: error.message});
     }
 }
 
@@ -54,21 +54,59 @@ exports.publish = async (req, res) => {
     }
     catch (error){
         console.log(error)
-        res.json({status: false, message: "there was an error publishing blog"})
+        res.status(500).json({status: false, message: "there was an error publishing blog"})
     }
 }
 
 exports.userBlogs = async (req, res) => {
     try {
         const id = req.user._id
-        
-        const userBlogs = await Blog.find({author: id})
+        const { 
+            state, 
+            page = 1, 
+            limit = 20,
+            order = 'asc',
+            order_by = 'createdAt'
+        } = req.query
 
-        return res.json({status: true, blogs: userBlogs})
+        const findQuery = {}
+
+        if (state){
+            findQuery.state = state
+        }
+
+        const sortQuery = {};
+        const sortAttributes = order_by.split(',')
+
+        for (attribute of sortAttributes){
+            if (order === 'asc' && order_by){
+                sortQuery[attribute] = 1
+            }
+
+            if (order === 'desc' && order_by){
+                sortQuery[attribute] = -1
+            }
+            
+        }
+        
+        const userBlogs = await Blog.find({...findQuery, author: id})
+        .sort(sortQuery)
+        .limit(limit * 1)
+        .skip((page -1) * limit)
+
+        const count = userBlogs.length;
+        
+        return res.status(200).json({
+            status: true, 
+            blogs: userBlogs,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
+        });
+
     }
     catch (error){
         console.log(error)
-        return res.status(400).json({message: "could not complete request"})
+        return res.status(500).json({message: "could not complete request"})
     }
       
 }
@@ -146,7 +184,7 @@ exports.getBlogPosts = async (req, res) => {
     }
     catch (error){
         console.log(error);
-        res.json({status: false, message: "there was an error getting blog posts"});
+        res.status(500).json({status: false, message: "there was an error getting blog posts"});
     }
     
 }
@@ -171,7 +209,7 @@ exports.getPost = async (req, res) => {
     }
     catch (error){
         console.log(error);
-        res.status(400).json({message: "there was an error getting specified blog post"});
+        res.status(500).json({message: "there was an error getting specified blog post"});
     }
     
 }
@@ -211,7 +249,7 @@ exports.updateBlog = async (req, res) => {
     }
     catch (error){
         console.log(error);
-        res.status(400).json({message: "something went wrong"});
+        res.status(500).json({message: "something went wrong"});
     }
 }
 
@@ -225,6 +263,6 @@ exports.deleteBlog = async (req, res) => {
     }
     catch (error){
         console.log(error)
-        res.status(400).json({message: "there was a problem performing operation"})
+        res.status(500).json({message: "there was a problem performing operation"})
     }
 }

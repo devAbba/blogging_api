@@ -20,7 +20,7 @@ exports.registerUser = async (req, res) => {
     }
     catch (error){
         console.log(error);
-        res.status(400).json({
+        res.status(500).json({
             message: "there was a problem creating user profile"
         });
     }
@@ -57,7 +57,7 @@ exports.loginUser = async (req, res) => {
     }
     catch (error){
         console.log(error)
-        res.status(400).json({
+        res.status(500).json({
             message: "there was a problem authenticating user"
         })
     }
