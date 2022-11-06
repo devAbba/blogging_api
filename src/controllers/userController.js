@@ -20,9 +20,17 @@ exports.registerUser = async (req, res) => {
     }
     catch (error){
         console.log(error);
-        res.status(500).json({
-            message: "there was a problem creating user profile"
-        });
+        if (error.code === 11000) {
+            res.status(400).json({
+                status: false,
+                message: "user already exists"
+            })    
+        } 
+        else {
+            res.status(500).json({
+                message: "there was a problem creating user profile"
+            });
+        }  
     }
     
 }

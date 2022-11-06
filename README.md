@@ -124,7 +124,7 @@ Success
 ---
 ### Create Blog as draft
 
-- Route: blogs/save-draft
+- Route: blog/save-draft
 - Method: POST
 - Header
     - Authorization: Bearer {token}
@@ -160,7 +160,7 @@ Success
 ---
 ### Publish Blog
 
-- Route: /blogs/publish/:blogId
+- Route: /blog/p/:blogId
 - Method: PATCH
 - Header
     - Authorization: Bearer {token}
@@ -188,7 +188,7 @@ Success
 ---
 ### Get Blog
 
-- Route: /blogs/:blogId
+- Route: /blog/:blogId
 - Method: GET
 - Header
     - Authorization: Bearer {token}
@@ -216,7 +216,7 @@ Success
 
 ### Get Blog Posts
 
-- Route: /blogs?author=john
+- Route: /blog?author=john
 - Method: GET
 - Header:
     - Authorization: Bearer {token}
@@ -251,7 +251,8 @@ Success
             "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
             "createdAt": "2022-11-04T14:30:48.619Z",
             "updatedAt": "2022-11-05T06:54:50.364Z",
-            "datePublished": "2022-11-04T14:40:34.671Z"
+            "datePublished": "2022-11-04T14:40:34.671Z",
+            "id": "objectId"
         
         },
         {
@@ -267,7 +268,8 @@ Success
             "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
             "createdAt": "2022-11-05T15:53:43.704Z",
             "updatedAt": "2022-11-05T15:56:44.874Z",
-            "publishedAt": "2022-11-05T15:56:44.874Z"
+            "publishedAt": "2022-11-05T15:56:44.874Z",
+            "id": "objectId"
             
         }
     ],
@@ -278,7 +280,7 @@ Success
 ---
 ### Update Blog
 
-- Route: /blogs/:blogId
+- Route: /blog/u/:blogId
 - Method: PATCH
 - Header
     - Authorization: Bearer {token}
@@ -307,14 +309,15 @@ Success
         "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum i just made a change",
         "createdAt": "2022-11-05T15:53:43.704Z",
         "updatedAt": "2022-11-05T15:56:44.874Z",
-        "publishedAt": "2022-11-05T15:56:44.874Z"
+        "publishedAt": "2022-11-05T15:56:44.874Z",
+        "id": "objectId"
     
 }
 ```
 ---
 ### Delete Blog
 
-- Route: /blogs/:blogId
+- Route: /blog/d/:blogId
 - Method: DELETE
 - Header
     - Authorization: Bearer {token}
@@ -337,7 +340,7 @@ Success
 
 ## User Blogs
 
-- Route: /users/myblogs
+- Route: /blog/a/userblogs
 - Method: GET
 - Header
     - Authorization: Bearer {token}
@@ -351,7 +354,7 @@ Success
     "blogs": [
         {
             "title": "Example title 3",
-            "author": "userId",
+            "author": "objectId",
             "state": "draft",
             "read_count": 0,
             "reading_time": "0.04 mins",
@@ -360,10 +363,24 @@ Success
             "createdAt": "2022-11-05T16:48:44.260Z",
             "updatedAt": "2022-11-05T16:55:03.643Z",
             "publishedAt": null,
-            
+            "id": "objectId"
+        },
+        {
+            "title": "Example title 4",
+            "author": "objectId",
+            "state": "published",
+            "read_count": 0,
+            "reading_time": "0.055 mins",
+            "tags": "Science and Technology",
+            "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum la la land",
+            "createdAt": "2022-11-06T06:39:59.191Z",
+            "updatedAt": "2022-11-06T06:42:22.402Z",
+            "publishedAt": "2022-11-06T06:42:22.401Z",
+            "id": "objectId"
         }
-    ]
-    
+    ],
+    "totalPages": 1,
+    "currentPage": 1
 }
 ```
 ...
