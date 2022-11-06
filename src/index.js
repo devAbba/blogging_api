@@ -19,7 +19,7 @@ app.use(limiter);
 app.use(helmet());
 
 app.use('/users', userRoute);
-app.use('/blogs', blogRoute);
+app.use('/blog', blogRoute);
 
 app.get('/', (req, res) => {
     return res.json({ status: true })

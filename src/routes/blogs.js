@@ -10,12 +10,14 @@ blogRouter.get('/', blogController.getBlogPosts)
 
 blogRouter.get('/:blogId', blogController.getPost);
 
+blogRouter.get('/a/userblogs', authenticate, blogController.userBlogs);
+
 blogRouter.post('/save-draft',CreateBlogValidationMW, authenticate, blogController.createDraft);
 
-blogRouter.patch('/publish/:blogId',UpdateBlogValidationMW, authenticate, authenticateUser, blogController.publish);
+blogRouter.patch('/p/:blogId',UpdateBlogValidationMW, authenticate, authenticateUser, blogController.publish);
 
-blogRouter.patch('/:blogId', UpdateBlogValidationMW, authenticate, authenticateUser, blogController.updateBlog);
+blogRouter.patch('/u/:blogId', UpdateBlogValidationMW, authenticate, authenticateUser, blogController.updateBlog);
 
-blogRouter.delete('/:blogId', authenticate, authenticateUser, blogController.deleteBlog);
+blogRouter.delete('/d/:blogId', authenticate, authenticateUser, blogController.deleteBlog);
 
 module.exports = blogRouter;

@@ -61,7 +61,7 @@ blogSchema.set('toJSON', {
         delete returnedObject._id
         // delete returnedObject.id
         delete returnedObject.__v
-        // delete returnedObject.author
+        
       }
 })
 
