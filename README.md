@@ -6,7 +6,7 @@ An AltSchool Africa Examination Project
 
 ## Requirements
 1. User should be able to register 
-2. User should be able to login with
+2. User should be able to login
 3. User should be authenticated using JWT
 4. Users should be able to create a blog
     - when a blog is created, it is in draft state
@@ -17,7 +17,7 @@ An AltSchool Africa Examination Project
     - blogs should be paginated
     - filterable by state
 9. Logged in and not logged in users should be able to get a published blog
-10. List of blogss endpoint that can be accessed by both logged in and not logged in users should be paginated
+10. List of blogs endpoint that can be accessed by both logged in and not logged in users should be paginated
     - default of 20 per page
     - it should be searchable by author, title and tags
     - it should be orderable by read_count, reading_time and timestamp
