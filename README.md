@@ -134,7 +134,11 @@ Success
     "title": "Example title",
     "description": "A short description",
     "tags": "Science and Technology",
-    "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+    "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+    "createdAt": "[date object]",
+    "updatedAt": "[date object]",
+    "publishedAt": null,
+    "id": "[objectId]"
 }
 ```
 
@@ -151,8 +155,8 @@ Success
         "reading_time": "0.04 mins",
         "tags": "Science and Technology",
         "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum.",
-        "createdAt": "2022-11-04T12:22:55.013Z",
-        "updatedAt": "2022-11-04T12:22:55.013Z"
+        "createdAt": "[date object]",
+        "updatedAt": "[date object]"
     }
     
 }
@@ -178,9 +182,9 @@ Success
         "reading_time": "0.04 mins",
         "tags": "Science and Technology",
         "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        "createdAt": "2022-11-05T15:53:43.704Z",
-        "updatedAt": "2022-11-05T15:56:44.874Z",
-        "publishedAt": "2022-11-05T15:56:44.874Z"
+        "createdAt": "[date object]",
+        "updatedAt": "[date object]",
+        "publishedAt": "[date object]"
     
 }
 
@@ -206,8 +210,8 @@ Success
         "reading_time": "0.14 mins",
         "tags": "Science and Technology",
         "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum.",
-        "updatedAt": "2022-11-04T12:29:40.819Z",
-        "datePublished": "2022-11-04T12:24:56.751Z"
+        "updatedAt": "[date object]",
+        "datePublished": "[date object]"
     }
     
 }
@@ -249,10 +253,10 @@ Success
             "reading_time": "0.14 mins",
             "tags": "science and Technology",
             "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "createdAt": "2022-11-04T14:30:48.619Z",
-            "updatedAt": "2022-11-05T06:54:50.364Z",
-            "datePublished": "2022-11-04T14:40:34.671Z",
-            "id": "objectId"
+            "createdAt": "[date object]",
+            "updatedAt": "[date object]",
+            "datePublished": "[date object]",
+            "id": "[objectId]"
         
         },
         {
@@ -266,10 +270,10 @@ Success
             "reading_time": "0.08 mins",
             "tags": "Science and Technology",
             "body": "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "createdAt": "2022-11-05T15:53:43.704Z",
-            "updatedAt": "2022-11-05T15:56:44.874Z",
-            "publishedAt": "2022-11-05T15:56:44.874Z",
-            "id": "objectId"
+            "createdAt": "[date object]",
+            "updatedAt": "[date object]",
+            "publishedAt": "[date object]",
+            "id": "[objectId]"
             
         }
     ],
