@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 
-exports.registerUser = async (req, res) => {
+exports.registerUser = async (req, res, next) => {
     try {
         const userData = req.body;
         const user = new User(userData);
@@ -19,23 +19,19 @@ exports.registerUser = async (req, res) => {
         
     }
     catch (error){
-        console.log(error);
+        
         if (error.code === 11000) {
             res.status(400).json({
                 status: false,
                 message: "user already exists"
             })    
         } 
-        else {
-            res.status(500).json({
-                message: "there was a problem creating user profile"
-            });
-        }  
+        next(error);
     }
     
 }
 
-exports.loginUser = async (req, res) => {
+exports.loginUser = async (req, res, next) => {
     try {
         const {email, password} = req.body
         const user = await User.findOne({ email })
@@ -64,10 +60,7 @@ exports.loginUser = async (req, res) => {
           
     }
     catch (error){
-        console.log(error)
-        res.status(500).json({
-            message: "there was a problem authenticating user"
-        })
+        next(error)
     }
 }
 
