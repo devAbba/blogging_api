@@ -21,8 +21,6 @@ module.exports = async function (req, res, next){
     }
     
     catch (error){
-        console.log(error);
-
         const { TokenExpiredError } = jwt
         if (error instanceof TokenExpiredError){
            return res.status(401).json({message: "Unathorized! Access token expired"})
