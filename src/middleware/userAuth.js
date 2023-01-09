@@ -1,4 +1,3 @@
-const User = require('../models/userModel')
 const Blog = require('../models/blogModel');
 
 module.exports = async function (req, res, next){
@@ -27,9 +26,6 @@ module.exports = async function (req, res, next){
         
     }
     catch (error){
-        console.log(error)
-        res.status(500).json({
-            message: "A problem occured with user validation for patch operation"
-        })
+        next(error)
     }
 }

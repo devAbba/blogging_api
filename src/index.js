@@ -4,8 +4,8 @@ const helmet = require('helmet');
 const userRoute = require('./routes/users');
 const blogRoute = require('./routes/blogs');
 const limterConfig = require('./config/limiter');
-const logger = require('./logging/logger');
-const httpLogger = require('./logging/httpLogger');
+// const logger = require('./logging/logger');
+// const httpLogger = require('./logging/httpLogger');
 require('dotenv').config();
 
 
@@ -36,7 +36,7 @@ app.use('*', (req, res) => {
 
 app.use((error, req, res, next) => {
     console.log(error)
-    logger.error(error)
+    // logger.error(error)
     const errorStatus = error.status || 500
     res.status(errorStatus).send(error.message)
     next()
