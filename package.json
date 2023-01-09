@@ -20,16 +20,19 @@
   },
   "homepage": "https://github.com/devAbba/blogging_api#readme",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-rate-limit": "^6.6.0",
     "helmet": "^6.0.0",
-    "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
     "mongodb-memory-server": "^8.9.5",
-    "mongoose": "^6.7.1"
+    "mongoose": "^6.7.1",
+    "morgan": "^1.10.0",
+    "morgan-json": "^1.1.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "jest": "^29.2.2",

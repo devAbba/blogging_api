@@ -1,9 +1,11 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-const userRoute = require('./routes/users')
-const blogRoute = require('./routes/blogs')
+const userRoute = require('./routes/users');
+const blogRoute = require('./routes/blogs');
 const limterConfig = require('./config/limiter');
+const logger = require('./logging/logger');
+const httpLogger = require('./logging/httpLogger');
 require('dotenv').config();
 
 
@@ -17,6 +19,7 @@ const limiter = rateLimit(limterConfig)
 app.use(limiter);
 
 app.use(helmet());
+
 
 app.use('/users', userRoute);
 app.use('/blog', blogRoute);
@@ -33,17 +36,12 @@ app.use('*', (req, res) => {
 
 app.use((error, req, res, next) => {
     console.log(error)
+    logger.error(error)
     const errorStatus = error.status || 500
     res.status(errorStatus).send(error.message)
     next()
 })
 
-
-app.use(function (error, req, res, next){
-    console.log(error)
-    res.status(error.status || 500)
-    res.json({error: error.message})
-})
 
 
 module.exports = app;

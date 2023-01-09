@@ -2,7 +2,7 @@ const Blog = require('../models/blogModel');
 const User = require('../models/userModel');
 
 
-exports.createDraft = async (req, res) => {
+exports.createDraft = async (req, res, next) => {
     try {
         const {
             title,
@@ -10,14 +10,17 @@ exports.createDraft = async (req, res) => {
             tags,
             body
         } = req.body
-
+        
+        let tagsArr = tags.split(',')
+        tagsArr = tagsArr.map(item => item.trim())
+        
         const reading_time = body.split(' ').length / 200 +' ' + 'mins'
         const userId = req.user._id
 
         const blog = new Blog({
             title,
             desciption,
-            tags,
+            tags: tagsArr,
             body,
             reading_time,
             author: userId
@@ -34,12 +37,11 @@ exports.createDraft = async (req, res) => {
         return res.status(201).json({status: true, blog});
     }
     catch (error){
-        console.log(error);
-        res.status(500).json({message: error.message});
+        next(error)
     }
 }
 
-exports.publish = async (req, res) => {
+exports.publish = async (req, res, next) => {
     try {
         const {blogId} = req.params
 
@@ -53,12 +55,11 @@ exports.publish = async (req, res) => {
         return res.json({status: true, blog: draft})
     }
     catch (error){
-        console.log(error)
-        res.status(500).json({status: false, message: "there was an error publishing blog"})
+        next(error)
     }
 }
 
-exports.userBlogs = async (req, res) => {
+exports.userBlogs = async (req, res, next) => {
     try {
         const id = req.user._id
         const { 
@@ -105,13 +106,12 @@ exports.userBlogs = async (req, res) => {
 
     }
     catch (error){
-        console.log(error)
-        return res.status(500).json({message: "could not complete request"})
+        next(error)
     }
       
 }
 
-exports.getBlogPosts = async (req, res) => {
+exports.getBlogPosts = async (req, res, next) => {
 
     try {
 
@@ -183,13 +183,12 @@ exports.getBlogPosts = async (req, res) => {
         });
     }
     catch (error){
-        console.log(error);
-        res.status(500).json({status: false, message: "there was an error getting blog posts"});
+        next(error);
     }
     
 }
 
-exports.getPost = async (req, res) => {
+exports.getPost = async (req, res, next) => {
     try {
         
         const { blogId } = req.params
@@ -208,13 +207,12 @@ exports.getPost = async (req, res) => {
   
     }
     catch (error){
-        console.log(error);
-        res.status(500).json({message: "there was an error getting specified blog post"});
+        next(error);
     }
     
 }
 
-exports.updateBlog = async (req, res) => {
+exports.updateBlog = async (req, res, next) => {
     try {
         const { blogId } = req.params;
         
@@ -238,7 +236,9 @@ exports.updateBlog = async (req, res) => {
         }
 
         if (tags){
-            blog.tags = tags
+            let tagsArr = tags.split(',')
+            tagsArr = tagsArr.map(item => item.trim())
+            blog.tags = tagsArr
         }
         if (body){
             blog.body = body
@@ -248,12 +248,11 @@ exports.updateBlog = async (req, res) => {
         return res.json({status: true, blog})
     }
     catch (error){
-        console.log(error);
-        res.status(500).json({message: "something went wrong"});
+        next(error);
     }
 }
 
-exports.deleteBlog = async (req, res) => {
+exports.deleteBlog = async (req, res, next) => {
     try {
         const { blogId } = req.params;
 
@@ -262,7 +261,6 @@ exports.deleteBlog = async (req, res) => {
         return res.json({status: true, blog})
     }
     catch (error){
-        console.log(error)
-        res.status(500).json({message: "there was a problem performing operation"})
+        next(error);
     }
 }

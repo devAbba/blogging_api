@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 const BlogCreateSchema = Joi.object({
     title: Joi.string()
@@ -14,8 +14,7 @@ const BlogCreateSchema = Joi.object({
     tags: Joi.string()
         .min(5)
         .max(500)
-        .optional()
-        .trim(),
+        .optional(),
     body: Joi.string()
         .min(10)
         .trim()
@@ -48,8 +47,7 @@ const BlogUpdateSchema = Joi.object({
     tags: Joi.string()
         .min(5)
         .max(500)
-        .optional()
-        .trim(),
+        .optional(),
     body: Joi.string()
         .min(10)
         .trim()
