@@ -39,7 +39,7 @@ exports.loginUser = async (req, res, next) => {
         
         if (!(user && userMatch)) {
             return res.status(401).json({
-                error: "invalid username or password"
+                message: "invalid username or password"
             })
         }
         
@@ -54,8 +54,6 @@ exports.loginUser = async (req, res, next) => {
             }
         )
     
-        
-        
         return res.status(200).json({message: "Login successful", token });
           
     }
