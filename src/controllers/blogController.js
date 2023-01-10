@@ -6,7 +6,7 @@ exports.createDraft = async (req, res, next) => {
     try {
         const {
             title,
-            desciption,
+            description,
             tags,
             body
         } = req.body
@@ -19,7 +19,7 @@ exports.createDraft = async (req, res, next) => {
 
         const blog = new Blog({
             title,
-            desciption,
+            description,
             tags: tagsArr,
             body,
             reading_time,
